@@ -1,6 +1,6 @@
 """Houses context processors used throughout the app."""
 
-from config import settings
+from django.conf import settings
 
 
 def git_sha(request) -> dict:  # noqa (Required to have the param.)

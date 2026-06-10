@@ -1,6 +1,7 @@
+import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 try:
     version_file_path = Path(BASE_DIR / "version.txt")
@@ -9,11 +10,7 @@ try:
 except FileNotFoundError:
     GIT_SHA = "dev"
 
-SECRET_KEY = "django-insecure-c+qm%l+#!pgw81kl=v4!tv3cnjrzaw&24!i@v+ro#78jb+_r#g"
-
-DEBUG = True
-
-ALLOWED_HOSTS = []
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -83,8 +80,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 
 USE_I18N = True
-
-USE_TZ = True
 
 STATIC_URL = "static/"
 
