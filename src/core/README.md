@@ -1,47 +1,52 @@
 # `core`
 
-The primary Django app for the ClinVar Submission Service. Houses the top-level pages
-(home, about, contact, help) and their corresponding URL routes, views, and templates.
-Feature-specific submission logic will live in separate apps; `core` owns only the
-application shell.
+The `core` Django app provides the site-wide informational pages — home, about, contact,
+and help — that are not specific to any submission workflow. It registers itself with
+Django's app registry, defines URL routes for those pages, renders them via simple
+function-based views, and verifies their behavior with a test suite.
 
 ### `__init__.py`
 
-Marks `core` as a Python package.
+Empty module marker that makes `core` a Python package.
 
 ### `apps.py`
 
-Defines `CoreConfig`, which registers the app with Django under the name `"core"` and
-sets `BigAutoField` as the default primary key type.
+Defines `CoreConfig`, the Django `AppConfig` subclass that registers the `core` app and
+sets `BigAutoField` as the default primary-key type.
 
 ### `templates/core/about.html`
 
-Extends `layouts/base.html`. Describes the ClinVar Submission Service (CVSS) and its
-purpose — providing ClinGen applications with a convenient way to submit curations to
+Renders the About page, which gives a one-sentence description of the ClinVar Submission
+Service (CVSS) and its role in allowing ClinGen applications to submit curations to
 ClinVar.
 
 ### `templates/core/contact.html`
 
-Extends `layouts/base.html`. Displays the CVSS support email address
-(`cvss@clinicalgenome.org`) for questions, comments, and concerns.
+Renders the Contact page, directing users to email `cvss@clinicalgenome.org` with
+questions, comments, or concerns.
 
 ### `templates/core/help.html`
 
-Extends `layouts/base.html`. Instructs users how to report issues, listing the
-information to include in a support email (description, reproduction steps, OS, browser,
-screenshots).
+Renders the Help page, instructing users to email `cvss@clinicalgenome.org` (with "CVSS
+Help" in the subject) and listing the information they should include: a description of
+the issue, reproduction steps, OS, browser, and any screenshots or error messages.
 
 ### `templates/core/home.html`
 
-Extends `layouts/base.html`. Landing page for the application. Shows the authenticated
-user's email when logged in, or a "not logged in" notice otherwise.
+Renders the Home page, displaying the service title and a greeting that indicates
+whether the current user is logged in (showing their email) or not.
+
+### `tests.py`
+
+Contains view tests for each of the four core pages (`HomeViewTest`, `AboutViewTest`,
+`ContactViewTest`, `HelpViewTest`). Each test uses `BaseViewTestMixin` to assert the
+correct URL, template, page name, and expected text strings.
 
 ### `urls.py`
 
-Maps the four top-level routes to their view functions.
+Maps URL paths to the four core views.
 
 ### `views.py`
 
-Simple view functions that render the four core pages. Each accepts an `HttpRequest` and
-returns an `HttpResponse` via `render`. The help view is named `help_` (with trailing
-underscore) to avoid shadowing Python's built-in `help`.
+Defines four function-based views — `home`, `about`, `contact`, and `help_` — each of
+which renders its corresponding template and returns an `HttpResponse`.
