@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en" hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token }}"}' data-theme="light">
+<head>
+    <title>HCI | {% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link type="text/css" rel="stylesheet" href="{% static 'cvss/css/bulma.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'cvss/css/bootstrap-icons.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'cvss/css/choices.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'cvss/css/dataTables.dataTables.min.css' %}">
+    <script src="{% static 'cvss/js/htmx.js' %}"></script>
+    <script src="{% static 'cvss/js/choices.min.js' %}"></script>
+    <script src="{% static 'cvss/js/jquery.min.js' %}"></script>
+    <script src="{% static 'cvss/js/dataTables.min.js' %}"></script>
+</head>
+<body>
+<header>
+    <div class="container">
+        {% include "partials/navbar.html" %}
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div id="message-container">
+            {% include "partials/messages.html" %}
+        </div>
+        {% block main %}{% endblock %}
+    </div>
+</main>
+<footer>
+    <div class="container">
+        {% include "partials/footer.html" %}
+    </div>
+</footer>
+</body>
+</html>

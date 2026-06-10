@@ -1,0 +1,69 @@
+/**
+ * Builds our JavaScript dependencies and puts them into the static directory where
+ * Django expects them to be. This script assumes you're in the root directory of
+ * the repository.
+ */
+
+import { copyFile } from "node:fs/promises";
+
+const CSS_STATIC_DIR = "./src/static/cvss/css";
+const JS_STATIC_DIR = "./src/static/cvss/js";
+
+// Copy HTMX into our Django static directory.
+const htmxPath = "./node_modules/htmx.org/dist/htmx.min.js";
+await copyFile(htmxPath, `${JS_STATIC_DIR}/htmx.js`);
+
+// Copy Bulma into our Django static directory.
+const bulmaPath = "./node_modules/bulma/css/bulma.min.css";
+await copyFile(bulmaPath, `${CSS_STATIC_DIR}/bulma.css`);
+
+// Copy Boostrap Icons CSS into our Django static directory.
+const bootstrapIconsCssPath =
+  "./node_modules/bootstrap-icons/font/bootstrap-icons.min.css";
+await copyFile(bootstrapIconsCssPath, `${CSS_STATIC_DIR}/bootstrap-icons.css`);
+
+// Copy Boostrap Icons fonts into our Django static directory.
+const bootstrapIconsFontsPath = "./node_modules/bootstrap-icons/font/fonts";
+await copyFile(
+  `${bootstrapIconsFontsPath}/bootstrap-icons.woff`,
+  `${CSS_STATIC_DIR}/fonts/bootstrap-icons.woff`,
+);
+await copyFile(
+  `${bootstrapIconsFontsPath}/bootstrap-icons.woff2`,
+  `${CSS_STATIC_DIR}/fonts/bootstrap-icons.woff2`,
+);
+
+// Copy Choices.js JavaScript into our Django static directory.
+const choicesJsPath = "./node_modules/choices.js/public/assets/scripts";
+await copyFile(`${choicesJsPath}/choices.js`, `${JS_STATIC_DIR}/choices.js`);
+await copyFile(
+  `${choicesJsPath}/choices.min.js`,
+  `${JS_STATIC_DIR}/choices.min.js`,
+);
+
+// Copy Choices.js CSS into our Django static directory.
+const choicesCssPath = "./node_modules/choices.js/public/assets/styles";
+await copyFile(
+  `${choicesCssPath}/choices.min.css`,
+  `${CSS_STATIC_DIR}/choices.min.css`,
+);
+await copyFile(
+  `${choicesCssPath}/choices.css.map`,
+  `${CSS_STATIC_DIR}/choices.css.map`,
+);
+
+// Copy jQuery into our Django static directory.
+const jqueryPath = "./node_modules/jquery/dist/jquery.min.js";
+await copyFile(jqueryPath, `${JS_STATIC_DIR}/jquery.min.js`);
+
+// Copy DataTables core JS into our Django static directory.
+const dataTablesJsPath = "./node_modules/datatables.net/js/dataTables.min.js";
+await copyFile(dataTablesJsPath, `${JS_STATIC_DIR}/dataTables.min.js`);
+
+// Copy DataTables CSS into our Django static directory.
+const dataTablesDtCssPath =
+  "./node_modules/datatables.net-dt/css/dataTables.dataTables.min.css";
+await copyFile(
+  dataTablesDtCssPath,
+  `${CSS_STATIC_DIR}/dataTables.dataTables.min.css`,
+);

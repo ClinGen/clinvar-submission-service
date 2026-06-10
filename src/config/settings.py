@@ -2,6 +2,13 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+try:
+    version_file_path = Path(BASE_DIR / "version.txt")
+    with version_file_path.open(encoding="utf-8") as f:
+        GIT_SHA = f.read().strip()
+except FileNotFoundError:
+    GIT_SHA = "dev"
+
 SECRET_KEY = "django-insecure-c+qm%l+#!pgw81kl=v4!tv3cnjrzaw&24!i@v+ro#78jb+_r#g"
 
 DEBUG = True
@@ -15,6 +22,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "core",
+    "common",
 ]
 
 MIDDLEWARE = [
@@ -32,13 +41,14 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "common.context_processors.git_sha",
             ],
         },
     },
@@ -49,7 +59,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "cvss.db",
     }
 }
 
@@ -77,3 +87,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATIC_ROOT = BASE_DIR / "public"

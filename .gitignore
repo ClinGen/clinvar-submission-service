@@ -1,0 +1,6 @@
+*.bak
+.venv
+__pycache__
+cvss.db
+node_modules
+public

@@ -1,0 +1,47 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}Help{% endblock %}
+{% block description %}Get help using the ClinVar Submission Service.{% endblock %}
+{% block main %}
+    <div class="box mt-6 mb-6">
+
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li>
+                    <a href="{% url 'home' %}">
+                        {% include "common/icon.html" with icon_name="house" %}
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <b>
+                        <a href="{% url 'help' %}">
+                            {% include "common/icon.html" with icon_name="info-circle" %}
+                            Help
+                        </a>
+                    </b>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="block">
+            <p>
+                If you encounter an issue with the CVSS, email
+                <a href="mailto:cvss@clinicalgenome.org">cvss@clinicalgenome.org</a>
+                with "CVSS Help" in the subject. Please include the following information in
+                your email.
+            </p>
+        </div>
+        <div class="content">
+            <ul>
+                <li>A concise description of the issue.</li>
+                <li>Steps to reproduce the issue.</li>
+                <li>Your operating system, e.g., Windows, macOS, Linux.</li>
+                <li>Your web browser, e.g., Chrome, Firefox, Safari.</li>
+                <li>Screenshots or copy-pasted error messages, if applicable.</li>
+            </ul>
+        </div>
+
+    </div>
+
+{% endblock %}

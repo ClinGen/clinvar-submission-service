@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block description %}Submit curations to ClinVar.{% endblock %}
+{% block main %}
+    <div class="box mt-6 mb-6">
+
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li>
+                    <b>
+                        <a href="{% url 'home' %}">
+                            {% include "common/icon.html" with icon_name="house" %}
+                            Home
+                        </a>
+                    </b>
+                </li>
+            </ul>
+        </nav>
+
+        <h1 class="title">ClinVar Submission Service</h1>
+        {% if user.is_authenticated %}
+            <p class="subtitle">You are logged in as {{ user.email }}.</p>
+        {% else %}
+            <p class="subtitle">You are not logged in.</p>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

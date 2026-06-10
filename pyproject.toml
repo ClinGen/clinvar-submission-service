@@ -13,3 +13,8 @@ dev = [
     "ruff>=0.15.15",
     "ty>=0.0.42",
 ]
+
+[[tool.ty.overrides]]
+include = ["src/common/tests.py"]
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
