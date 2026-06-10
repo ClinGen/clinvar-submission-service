@@ -1,6 +1,9 @@
 *.bak
-.venv
-__pycache__
 cvss.db
-node_modules
-public
+inventory.ini
+
+.terraform/
+.venv/
+__pycache__/
+node_modules/
+public/

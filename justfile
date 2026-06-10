@@ -149,3 +149,81 @@ alias djsh := django-shell
 test-all:
     cd src && uv run manage.py test --shuffle --parallel auto
 alias tal := test-all
+
+#=====================================================================
+# Terraform Recipes
+#=====================================================================
+
+# Format the Terraform code. -----------------------------------------
+[group('terraform')]
+terraform-format:
+    cd infra/terraform && terraform fmt
+alias tffm := terraform-format
+
+# Check the Terraform code for formatting issues. --------------------
+[group('terraform')]
+terraform-format-check:
+    cd infra/terraform && terraform fmt -check
+alias tffc := terraform-format-check
+
+# Check the Terraform code for lint errors. --------------------------
+[group('terraform')]
+terraform-lint:
+    cd infra/terraform && terraform validate
+alias tflt := terraform-lint
+
+#=====================================================================
+# Ansible Recipes
+#=====================================================================
+
+# Format the Ansible YAML. -------------------------------------------
+[group('ansible')]
+ansible-format:
+    cd infra/ansible && yamlfmt .
+alias anfm := ansible-format
+
+# Check the Ansible YAML for formatting issues. ----------------------
+[group('ansible')]
+ansible-format-check:
+    cd infra/ansible && yamlfmt -lint
+alias anfc := ansible-format-check
+
+# Check the Ansible YAML for lint errors. ----------------------------
+[group('ansible')]
+ansible-lint:
+    cd infra/ansible && ansible-lint
+alias anlt := ansible-lint
+
+# Try to fix lint errors in the Ansible YAML. ------------------------
+[group('ansible')]
+ansible-lint-fix:
+    cd infra/ansible && ansible-lint --fix
+alias anlf := ansible-lint-fix
+
+#=====================================================================
+# Server Recipes
+#=====================================================================
+
+# Set up the test server for the first time. -------------------------
+[group('server')]
+server-test-init:
+    cd infra/ansible && uv run ansible-playbook -i inventory.ini playbooks/init.yml --limit test_server
+alias stei := server-test-init
+
+# Set up the production server for the first time. -------------------
+[group('server')]
+server-prod-init:
+    cd infra/ansible && uv run ansible-playbook -i inventory.ini playbooks/init.yml --limit prod_server
+alias spri := server-prod-init
+
+# Deploy latest changes to the test server. --------------------------
+[group('server')]
+server-test-deploy:
+    cd infra/ansible && uv run ansible-playbook -i inventory.ini playbooks/deploy.yml --limit test_server
+alias sted := server-test-deploy
+
+# Deploy latest changes to the production server. --------------------
+[group('server')]
+server-prod-deploy:
+    cd infra/ansible && uv run ansible-playbook -i inventory.ini playbooks/deploy.yml --limit prod_server
+alias sprd := server-prod-deploy
