@@ -12,6 +12,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "ansible-lint>=26.4.0",
+    "mdformat>=1.0.0",
     "ruff>=0.15.15",
     "ty>=0.0.42",
 ]
