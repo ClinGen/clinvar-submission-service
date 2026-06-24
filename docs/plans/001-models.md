@@ -90,9 +90,10 @@ always the same? If they can differ, what is the distinction? *(Ask Christine.)*
 **Decision — Variant ID** Variant should be its own model, with curations pointing to it
 via a foreign key.
 
-**Question — Variant ID** ClinGen CA IDs should be used as the stable, unique identifier
-for a variant. Does VCI include the CA ID in the payload it sends to CVSS, or does CVSS
-need to look it up from the ClinGen Allele Registry? *(Needs investigation.)*
+**Question — Variant ID** ClinGen CAR IDs should be used as the stable, unique
+identifier for a variant. Does VCI include the CAR ID in the payload it sends to CVSS,
+or does CVSS need to look it up from the ClinGen Allele Registry? *(Needs
+investigation.)*
 
 **Question — ERepo link** The example URL contains the same UUID as the Local ID,
 suggesting it is always derivable. Leaning towards not storing it as a separate field.
@@ -124,7 +125,7 @@ is on `id_type` + `id_value`. Curations point to a Disease via a foreign key.
 
 **`Variant`**
 
-- CA ID (stable unique identifier from the ClinGen Allele Registry; open question on
+- CAR ID (stable unique identifier from the ClinGen Allele Registry; open question on
   whether VCI provides this or CVSS must look it up)
 - Gene symbol
 - Reference sequence
