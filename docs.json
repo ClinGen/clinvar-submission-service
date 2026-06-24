@@ -3,6 +3,7 @@
     "src/common",
     "src/config",
     "src/core",
+    "src/curation",
     "src/static",
     "src/templates"
   ],
