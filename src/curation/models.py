@@ -5,7 +5,7 @@ from simple_history.models import HistoricalRecords
 
 
 class Variant(models.Model):
-    ca_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    car_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
     gene_symbol = models.CharField(max_length=50)
     reference_sequence = models.CharField(max_length=100)
     hgvs = models.TextField()
