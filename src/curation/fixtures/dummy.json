@@ -1,0 +1,141 @@
+[
+  {
+    "model": "curation.variant",
+    "pk": 1,
+    "fields": {
+      "car_id": "CAR001",
+      "gene_symbol": "FOOB",
+      "reference_sequence": "NM_000000.1",
+      "hgvs": "NM_000000.1:c.123A>G",
+      "alternate_designations": "foobar_alt_1",
+      "added_at": "2025-01-01T00:00:00",
+      "updated_at": "2025-01-01T00:00:00"
+    }
+  },
+  {
+    "model": "curation.variant",
+    "pk": 2,
+    "fields": {
+      "car_id": "CAR002",
+      "gene_symbol": "BARZ",
+      "reference_sequence": "NM_000001.1",
+      "hgvs": "NM_000001.1:c.456C>T",
+      "alternate_designations": "",
+      "added_at": "2025-01-02T00:00:00",
+      "updated_at": "2025-01-02T00:00:00"
+    }
+  },
+  {
+    "model": "curation.disease",
+    "pk": 1,
+    "fields": {
+      "id_type": "MONDO",
+      "id_value": "MONDO:0000001",
+      "added_at": "2025-01-01T00:00:00",
+      "updated_at": "2025-01-01T00:00:00"
+    }
+  },
+  {
+    "model": "curation.disease",
+    "pk": 2,
+    "fields": {
+      "id_type": "MONDO",
+      "id_value": "MONDO:0000002",
+      "added_at": "2025-01-02T00:00:00",
+      "updated_at": "2025-01-02T00:00:00"
+    }
+  },
+  {
+    "model": "curation.publication",
+    "pk": 1,
+    "fields": {
+      "pubmed_id": "11111111",
+      "doi": null,
+      "title": "Foobar variant study",
+      "authors": [
+        "Foo A",
+        "Bar B"
+      ],
+      "publication_year": 2020,
+      "added_at": "2025-01-01T00:00:00",
+      "updated_at": "2025-01-01T00:00:00"
+    }
+  },
+  {
+    "model": "curation.publication",
+    "pk": 2,
+    "fields": {
+      "pubmed_id": "22222222",
+      "doi": null,
+      "title": "Baz gene analysis",
+      "authors": [
+        "Baz C",
+        "Qux D"
+      ],
+      "publication_year": 2021,
+      "added_at": "2025-01-02T00:00:00",
+      "updated_at": "2025-01-02T00:00:00"
+    }
+  },
+  {
+    "model": "curation.curation",
+    "pk": 1,
+    "fields": {
+      "variant": 1,
+      "disease": 1,
+      "publications": [
+        1,
+        2
+      ],
+      "batch": null,
+      "local_id": "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa",
+      "linking_id": "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb",
+      "germline_classification": "Pathogenic",
+      "mode_of_inheritance": "Autosomal dominant",
+      "date_last_evaluated": "2025-01-01",
+      "comment_on_classification": "Foobar comment on classification.",
+      "collection_method": "literature only",
+      "allele_origin": "germline",
+      "affected_status": "yes",
+      "scv": null,
+      "status": "PND",
+      "source_app": "foobar-app",
+      "schema_version": "1.0",
+      "raw_payload": {
+        "foo": "bar"
+      },
+      "added_at": "2025-01-01T00:00:00",
+      "updated_at": "2025-01-01T00:00:00"
+    }
+  },
+  {
+    "model": "curation.curation",
+    "pk": 2,
+    "fields": {
+      "variant": 2,
+      "disease": 2,
+      "publications": [
+        1
+      ],
+      "batch": null,
+      "local_id": "cccccccc-cccc-4ccc-cccc-cccccccccccc",
+      "linking_id": "dddddddd-dddd-4ddd-dddd-dddddddddddd",
+      "germline_classification": "Likely pathogenic",
+      "mode_of_inheritance": "Autosomal recessive",
+      "date_last_evaluated": "2025-02-01",
+      "comment_on_classification": "",
+      "collection_method": "clinical testing",
+      "allele_origin": "germline",
+      "affected_status": "yes",
+      "scv": null,
+      "status": "PND",
+      "source_app": "foobar-app",
+      "schema_version": "1.0",
+      "raw_payload": {
+        "baz": "qux"
+      },
+      "added_at": "2025-02-01T00:00:00",
+      "updated_at": "2025-02-01T00:00:00"
+    }
+  }
+]
