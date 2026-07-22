@@ -3,11 +3,25 @@ import uuid
 from django.db import models
 from simple_history.models import HistoricalRecords
 
+from curation.constants.models import (
+    BatchMaxLength,
+    BatchStatus,
+    CurationMaxLength,
+    CurationStatus,
+    DiseaseMaxLength,
+    PublicationMaxLength,
+    VariantMaxLength,
+)
+
 
 class Variant(models.Model):
-    car_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    gene_symbol = models.CharField(max_length=50)
-    reference_sequence = models.CharField(max_length=100)
+    car_id = models.CharField(
+        max_length=VariantMaxLength.CAR_ID, unique=True, null=True, blank=True
+    )
+    gene_symbol = models.CharField(max_length=VariantMaxLength.GENE_SYMBOL)
+    reference_sequence = models.CharField(
+        max_length=VariantMaxLength.REFERENCE_SEQUENCE
+    )
     hgvs = models.TextField()
     alternate_designations = models.TextField(blank=True)
     added_at = models.DateTimeField(auto_now_add=True)
@@ -19,8 +33,8 @@ class Variant(models.Model):
 
 
 class Disease(models.Model):
-    id_type = models.CharField(max_length=50)
-    id_value = models.CharField(max_length=100)
+    id_type = models.CharField(max_length=DiseaseMaxLength.ID_TYPE)
+    id_value = models.CharField(max_length=DiseaseMaxLength.ID_VALUE)
     added_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
@@ -33,12 +47,14 @@ class Disease(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.id_type}:{self.id_value}"
+        return f"{self.id_value}"
 
 
 class Publication(models.Model):
-    pubmed_id = models.CharField(max_length=20, null=True, blank=True)
-    doi = models.CharField(max_length=200, null=True, blank=True)
+    pubmed_id = models.CharField(
+        max_length=PublicationMaxLength.PUBMED_ID, null=True, blank=True
+    )
+    doi = models.CharField(max_length=PublicationMaxLength.DOI, null=True, blank=True)
     title = models.TextField(blank=True)
     authors = models.JSONField(default=list)
     publication_year = models.IntegerField(null=True, blank=True)
@@ -51,16 +67,18 @@ class Publication(models.Model):
 
 
 class Batch(models.Model):
-    class Status(models.TextChoices):
-        CREATED = "CRE", "Created"
-        SUBMITTED = "SUB", "Submitted"
-        PROCESSED = "PRO", "Processed"
-        ERROR = "ERR", "Error"
+    Status = BatchStatus
 
-    name = models.CharField(max_length=200, blank=True)
-    submission_id = models.CharField(max_length=20, null=True, blank=True)
+    name = models.CharField(max_length=BatchMaxLength.NAME, blank=True)
+    submission_id = models.CharField(
+        max_length=BatchMaxLength.SUBMISSION_ID, null=True, blank=True
+    )
     payload = models.JSONField(null=True, blank=True)
-    status = models.CharField(max_length=20, choices=Status, default=Status.CREATED)
+    status = models.CharField(
+        max_length=BatchMaxLength.STATUS,
+        choices=BatchStatus,
+        default=BatchStatus.CREATED,
+    )
     added_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
@@ -70,12 +88,7 @@ class Batch(models.Model):
 
 
 class Curation(models.Model):
-    class Status(models.TextChoices):
-        PENDING = "PND", "Pending"
-        IN_BATCH = "BAT", "In Batch"
-        SUBMITTED = "SUB", "Submitted"
-        PROCESSED = "PRO", "Processed"
-        ERROR = "ERR", "Error"
+    Status = CurationStatus
 
     variant = models.ForeignKey(
         Variant, on_delete=models.PROTECT, related_name="curations"
@@ -95,17 +108,26 @@ class Curation(models.Model):
     )
     local_id = models.UUIDField(default=uuid.uuid4)
     linking_id = models.UUIDField(default=uuid.uuid4)
-    germline_classification = models.CharField(max_length=100)
-    mode_of_inheritance = models.CharField(max_length=200)
+    germline_classification = models.CharField(
+        max_length=CurationMaxLength.GERMLINE_CLASSIFICATION
+    )
+    mode_of_inheritance = models.CharField(
+        max_length=CurationMaxLength.MODE_OF_INHERITANCE
+    )
     date_last_evaluated = models.DateField(null=True, blank=True)
     comment_on_classification = models.TextField(blank=True)
-    collection_method = models.CharField(max_length=100)
-    allele_origin = models.CharField(max_length=100)
-    affected_status = models.CharField(max_length=100)
-    scv = models.CharField(max_length=30, null=True, blank=True)
-    status = models.CharField(max_length=3, choices=Status, default=Status.PENDING)
-    source_app = models.CharField(max_length=50)
-    schema_version = models.CharField(max_length=20)
+    collection_method = models.CharField(max_length=CurationMaxLength.COLLECTION_METHOD)
+    allele_origin = models.CharField(max_length=CurationMaxLength.ALLELE_ORIGIN)
+    affected_status = models.CharField(max_length=CurationMaxLength.AFFECTED_STATUS)
+    affiliation = models.CharField(max_length=CurationMaxLength.AFFILIATION, default="")
+    scv = models.CharField(max_length=CurationMaxLength.SCV, null=True, blank=True)
+    status = models.CharField(
+        max_length=CurationMaxLength.STATUS,
+        choices=CurationStatus,
+        default=CurationStatus.PENDING,
+    )
+    source_app = models.CharField(max_length=CurationMaxLength.SOURCE_APP)
+    schema_version = models.CharField(max_length=CurationMaxLength.SCHEMA_VERSION)
     raw_payload = models.JSONField()
     added_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

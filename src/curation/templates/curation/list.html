@@ -1,0 +1,71 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}Curations{% endblock %}
+{% block description %}Review pending curations awaiting ClinVar
+    submission.{% endblock %}
+{% block main %}
+    <div class="box mt-6 mb-6">
+
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li>
+                    <a href="{% url 'home' %}">
+                        {% include "common/icon.html" with icon_name="house" %}
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <b>
+                        <a href="{% url 'curation-list' %}">
+                            {% include "common/icon.html" with icon_name="list-ul" %}
+                            Curations
+                        </a>
+                    </b>
+                </li>
+            </ul>
+        </nav>
+
+        <h1 class="title">Curations</h1>
+
+        <div class="scroll-container">
+            <table id="curation-table"
+                   class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Variant</th>
+                    <th>Disease</th>
+                    <th>Classification</th>
+                    <th>Affiliation</th>
+                    <th>Status</th>
+                    <th>Received</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for curation in curations %}
+                    <tr>
+                        <td>{{ curation.local_id }}</td>
+                        <td>{{ curation.variant.car_id }}</td>
+                        <td>{{ curation.disease }}</td>
+                        <td>{{ curation.germline_classification }}</td>
+                        <td>{{ curation.affiliation }}</td>
+                        <td>{{ curation.get_status_display }}</td>
+                        <td>{{ curation.added_at }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No curations found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('htmx:load', () => {
+            new DataTable('#curation-table');
+        });
+    </script>
+{% endblock %}

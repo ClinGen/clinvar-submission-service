@@ -10,6 +10,7 @@ dependencies = [
     "djangorestframework>=3.17.1",
     "djangorestframework-api-key>=3.1.0",
     "python-dotenv>=1.2.2",
+    "requests>=2.34.2",
 ]
 
 [dependency-groups]
@@ -22,6 +23,6 @@ dev = [
 ]
 
 [[tool.ty.overrides]]
-include = ["src/common/tests.py"]
+include = ["src/common/tests.py", "src/api/tests.py"]
 [tool.ty.overrides.rules]
 unresolved-attribute = "ignore"

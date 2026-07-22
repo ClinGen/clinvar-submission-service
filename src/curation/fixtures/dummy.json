@@ -52,10 +52,7 @@
       "pubmed_id": "11111111",
       "doi": null,
       "title": "Foobar variant study",
-      "authors": [
-        "Foo A",
-        "Bar B"
-      ],
+      "authors": ["Foo A", "Bar B"],
       "publication_year": 2020,
       "added_at": "2025-01-01T00:00:00",
       "updated_at": "2025-01-01T00:00:00"
@@ -68,10 +65,7 @@
       "pubmed_id": "22222222",
       "doi": null,
       "title": "Baz gene analysis",
-      "authors": [
-        "Baz C",
-        "Qux D"
-      ],
+      "authors": ["Baz C", "Qux D"],
       "publication_year": 2021,
       "added_at": "2025-01-02T00:00:00",
       "updated_at": "2025-01-02T00:00:00"
@@ -83,10 +77,7 @@
     "fields": {
       "variant": 1,
       "disease": 1,
-      "publications": [
-        1,
-        2
-      ],
+      "publications": [1, 2],
       "batch": null,
       "local_id": "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa",
       "linking_id": "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb",
@@ -114,9 +105,7 @@
     "fields": {
       "variant": 2,
       "disease": 2,
-      "publications": [
-        1
-      ],
+      "publications": [1],
       "batch": null,
       "local_id": "cccccccc-cccc-4ccc-cccc-cccccccccccc",
       "linking_id": "dddddddd-dddd-4ddd-dddd-dddddddddddd",
