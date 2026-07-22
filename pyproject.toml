@@ -1,7 +1,7 @@
 [project]
 name = "clinvar-submission-service"
 version = "0.1.0"
-description = "The ClinVar Submission Service (CVSS) manages submissions from curation interfaces to ClinVar."
+description = "The ClinVar Submission Service (CVSS) manages submissions from upstream applications to ClinVar."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

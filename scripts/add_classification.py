@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-"""POST a sample curation to the local CVSS API for manual testing.
+"""POST a sample classification to the local CVSS API for manual testing.
 
 Usage:
-    uv run scripts/add_curation.py
-    uv run scripts/add_curation.py --host http://localhost:8000
+    uv run scripts/add_classification.py
+    uv run scripts/add_classification.py --host http://localhost:8000
 
 The script reads API_KEY from the environment (or .env). Create an API key
 via the Django admin panel and set it in .env before running.
@@ -71,7 +71,7 @@ def main() -> None:
         "affected_status": "yes",
     }
 
-    url = f"{args.host}/api/v1/curation/create/"
+    url = f"{args.host}/api/v1/classification/create/"
     print(f"POST {url}")
     print(f"local_id: {payload['local_id']}")
 

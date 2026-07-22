@@ -2,12 +2,12 @@ from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from curation.models import Curation, Disease, Variant
+from classification.models import Classification, Disease, Variant
 
-LIST_URL = reverse("curation-list")
+LIST_URL = reverse("classification-list")
 
 
-class CurationListViewTest(TestCase):
+class ClassificationListViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username="submitter", password="password")
@@ -16,7 +16,7 @@ class CurationListViewTest(TestCase):
         self.client.login(username="submitter", password="password")
         response = self.client.get(LIST_URL)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "curation/list.html")
+        self.assertTemplateUsed(response, "classification/list.html")
 
     def test_unauthenticated_request_redirects_to_login(self):
         response = self.client.get(LIST_URL)
@@ -24,7 +24,7 @@ class CurationListViewTest(TestCase):
             response, f"/accounts/login/?next={LIST_URL}", fetch_redirect_response=False
         )
 
-    def test_curations_appear_in_response(self):
+    def test_classifications_appear_in_response(self):
         self.client.login(username="submitter", password="password")
         variant = Variant.objects.create(
             car_id="CA999",
@@ -33,7 +33,7 @@ class CurationListViewTest(TestCase):
             hgvs="BAZ",
         )
         disease = Disease.objects.create(id_type="MONDO", id_value="MONDO:12345")
-        Curation.objects.create(
+        Classification.objects.create(
             variant=variant,
             disease=disease,
             affiliation="12345",

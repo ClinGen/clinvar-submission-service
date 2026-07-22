@@ -11,9 +11,10 @@ interpretations.
 Currently, ClinGen submits to ClinVar by uploading spreadsheets. This process is not as
 streamlined as we'd like it to be.
 
-The **ClinVar Submission Service (CVSS)** replaces this workflow. It accepts curations
-from upstream ClinGen apps, stores them, translates them into ClinVar's JSON schema, and
-handles batching, submission, and status polling on behalf of each affiliation.
+The **ClinVar Submission Service (CVSS)** replaces this workflow. It accepts
+classifications from upstream ClinGen apps, stores them, translates them into ClinVar's
+JSON schema, and handles batching, submission, and status polling on behalf of each
+affiliation.
 
 The initial upstream app is **VCI v3**. A rewritten version, **VCI v4**, will integrate
 with CVSS as a second upstream app once it is ready. Future ClinGen apps may also
@@ -35,9 +36,11 @@ time, never both simultaneously.
 
 **Goals**
 
-- Accept curations pushed from upstream ClinGen apps via a REST API.
-- Translate curations from each upstream app's native format into ClinVar's JSON schema.
-- Allow submitters to review pending curations, and manually create and submit batches.
+- Accept classifications pushed from upstream ClinGen apps via a REST API.
+- Translate classifications from each upstream app's native format into ClinVar's JSON
+  schema.
+- Allow submitters to review pending classifications, and manually create and submit
+  batches.
 - Poll ClinVar for submission status and surface results in a dashboard and a queryable
   API endpoint.
 - Replace the existing spreadsheet-based submission workflow.
@@ -78,28 +81,29 @@ The following are planned but out of scope for the initial release:
 
 ### Upstream Integration
 
-When a curation is approved in an upstream app, that app POSTs it to the CVSS REST API
-(built with Django REST Framework). CVSS does not poll upstream apps.
+When a classification is approved in an upstream app, that app POSTs it to the CVSS REST
+API (built with Django REST Framework). CVSS does not poll upstream apps.
 
 Each upstream app authenticates with a **service-level API key** issued by CVSS. The
-affiliation the curation belongs to is asserted in the payload and validated against the
-cached AS data. Because only trusted, authenticated upstream servers can call this
-endpoint, the affiliation field is not considered caller-supplied in the untrusted
-sense.
+affiliation the classification belongs to is asserted in the payload and validated
+against the cached AS data. Because only trusted, authenticated upstream servers can
+call this endpoint, the affiliation field is not considered caller-supplied in the
+untrusted sense.
 
 ### Translation
 
 CVSS contains one **translator** per upstream app (e.g., a VCI v3 translator, a VCI v4
-translator). Each translator converts the upstream app's native curation format into
-ClinVar's JSON schema. When a new upstream app integrates with CVSS, a new translator is
-added to the CVSS codebase.
+translator). Each translator converts the upstream app's native classification format
+into ClinVar's JSON schema. When a new upstream app integrates with CVSS, a new
+translator is added to the CVSS codebase.
 
 ### Batch Creation and Submission
 
-Curations accumulate in CVSS as they arrive. An affiliation manager logs into the CVSS
-dashboard, reviews pending curations for their affiliation, and manually creates a batch
-when ready. Batches are submitted to ClinVar using the affiliation's `SP-API-KEY`, which
-is stored in **AWS Secrets Manager** and retrieved at submission time.
+Classifications accumulate in CVSS as they arrive. An affiliation manager logs into the
+CVSS dashboard, reviews pending classifications for their affiliation, and manually
+creates a batch when ready. Batches are submitted to ClinVar using the affiliation's
+`SP-API-KEY`, which is stored in **AWS Secrets Manager** and retrieved at submission
+time.
 
 ### Status Polling
 
@@ -111,9 +115,9 @@ and via API.
 
 ### Data Storage
 
-**Curation records**
+**Classification records**
 
-Each incoming curation is stored in two forms:
+Each incoming classification is stored in two forms:
 
 - The **raw pre-translated payload** as a JSON blob, alongside `source_app` (e.g.,
   `"vci_v3"`) and `schema_version` fields. This preserves the original data and provides
@@ -121,14 +125,14 @@ Each incoming curation is stored in two forms:
 - The **translated ClinVar-format fields** in a relational table, used for dashboard
   queries and batch assembly.
 
-Curation lifecycle: `pending` → `in_batch` → `submitted` → `processed` / `error`.
+Classification lifecycle: `pending` → `in_batch` → `submitted` → `processed` / `error`.
 
 **Batch records**
 
-A batch is a many-to-one grouping of curations (a curation belongs to at most one batch
-at a time). The assembled ClinVar submission payload is stored as a JSON blob alongside
-the batch record. If a curation in a batch fails, it returns to `pending` and can be
-included in a future batch.
+A batch is a many-to-one grouping of classifications (a classification belongs to at
+most one batch at a time). The assembled ClinVar submission payload is stored as a JSON
+blob alongside the batch record. If a classification in a batch fails, it returns to
+`pending` and can be included in a future batch.
 
 **Audit trail**
 
@@ -162,7 +166,7 @@ of the polling job.
 **Centralized translation (in CVSS) vs. distributed translation (in each upstream app)**
 
 An alternative design would require each upstream app to produce ClinVar-format JSON
-before sending curations to CVSS. This was rejected because:
+before sending classifications to CVSS. This was rejected because:
 
 - All upstream apps and CVSS are maintained by the same small team.
 - Centralizing translation means ClinVar schema changes require a fix in one place.
@@ -199,8 +203,8 @@ overhead.
 
 ### Privacy
 
-CVSS does not store or transmit protected health information (PHI). All curation data is
-scientific and aggregate in nature. HIPAA compliance is out of scope.
+CVSS does not store or transmit protected health information (PHI). All classification
+data is scientific and aggregate in nature. HIPAA compliance is out of scope.
 
 ### Observability
 

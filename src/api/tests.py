@@ -4,9 +4,9 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework_api_key.models import APIKey
 
-from curation.models import Curation, Disease, Publication, Variant
+from classification.models import Classification, Disease, Publication, Variant
 
-CREATE_URL = "/api/v1/curation/create/"
+CREATE_URL = "/api/v1/classification/create/"
 
 VALID_PAYLOAD = {
     "variant": {
@@ -45,7 +45,7 @@ VALID_PAYLOAD = {
 }
 
 
-class CurationCreateViewTest(TestCase):
+class ClassificationCreateViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
         _, key = APIKey.objects.create_key(name="test-vci")
@@ -57,14 +57,14 @@ class CurationCreateViewTest(TestCase):
         self.assertEqual(response.data["local_id"], VALID_PAYLOAD["local_id"])
         self.assertEqual(response.data["status"], "pending")
 
-    def test_create_stores_curation_variant_disease_publication(self):
+    def test_create_stores_classification_variant_disease_publication(self):
         self.client.post(CREATE_URL, VALID_PAYLOAD, format="json")
-        self.assertEqual(Curation.objects.count(), 1)
+        self.assertEqual(Classification.objects.count(), 1)
         self.assertEqual(Variant.objects.count(), 1)
         self.assertEqual(Disease.objects.count(), 1)
         self.assertEqual(Publication.objects.count(), 1)
-        curation = Curation.objects.get()
-        self.assertEqual(curation.publications.count(), 1)
+        classification = Classification.objects.get()
+        self.assertEqual(classification.publications.count(), 1)
 
     def test_create_reuses_existing_variant_by_car_id(self):
         Variant.objects.create(
@@ -96,14 +96,14 @@ class CurationCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
 
-class CurationUpdateViewTest(TestCase):
+class ClassificationUpdateViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
         _, key = APIKey.objects.create_key(name="test-vci")
         self.client.credentials(HTTP_AUTHORIZATION=f"Api-Key {key}")
         create_response = self.client.post(CREATE_URL, VALID_PAYLOAD, format="json")
         self.local_id = create_response.data["local_id"]
-        self.update_url = f"/api/v1/curation/{self.local_id}/update/"
+        self.update_url = f"/api/v1/classification/{self.local_id}/update/"
 
     @staticmethod
     def _updated_payload():
@@ -111,28 +111,28 @@ class CurationUpdateViewTest(TestCase):
         payload["germline_classification"] = "Likely pathogenic"
         return payload
 
-    def test_update_returns_200_for_valid_pending_curation(self):
+    def test_update_returns_200_for_valid_pending_classification(self):
         response = self.client.put(
             self.update_url, self._updated_payload(), format="json"
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["local_id"], self.local_id)
         self.assertEqual(response.data["status"], "pending")
-        curation = Curation.objects.get(local_id=self.local_id)
-        self.assertEqual(curation.germline_classification, "Likely pathogenic")
+        classification = Classification.objects.get(local_id=self.local_id)
+        self.assertEqual(classification.germline_classification, "Likely pathogenic")
 
     def test_update_returns_404_for_nonexistent_local_id(self):
         missing_id = uuid.uuid4()
         response = self.client.put(
-            f"/api/v1/curation/{missing_id}/update/",
+            f"/api/v1/classification/{missing_id}/update/",
             self._updated_payload(),
             format="json",
         )
         self.assertEqual(response.status_code, 404)
 
     def test_update_returns_409_when_status_is_in_batch(self):
-        Curation.objects.filter(local_id=self.local_id).update(
-            status=Curation.Status.IN_BATCH
+        Classification.objects.filter(local_id=self.local_id).update(
+            status=Classification.Status.IN_BATCH
         )
         response = self.client.put(
             self.update_url, self._updated_payload(), format="json"
@@ -141,8 +141,8 @@ class CurationUpdateViewTest(TestCase):
         self.assertIn("In Batch", response.data["detail"])
 
     def test_update_returns_409_when_status_is_submitted(self):
-        Curation.objects.filter(local_id=self.local_id).update(
-            status=Curation.Status.SUBMITTED
+        Classification.objects.filter(local_id=self.local_id).update(
+            status=Classification.Status.SUBMITTED
         )
         response = self.client.put(
             self.update_url, self._updated_payload(), format="json"

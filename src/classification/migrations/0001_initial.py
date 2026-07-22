@@ -313,7 +313,7 @@ class Migration(migrations.Migration):
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name="HistoricalCuration",
+            name="HistoricalClassification",
             fields=[
                 (
                     "id",
@@ -368,7 +368,7 @@ class Migration(migrations.Migration):
                         null=True,
                         on_delete=django.db.models.deletion.DO_NOTHING,
                         related_name="+",
-                        to="curation.batch",
+                        to="classification.batch",
                     ),
                 ),
                 (
@@ -379,7 +379,7 @@ class Migration(migrations.Migration):
                         null=True,
                         on_delete=django.db.models.deletion.DO_NOTHING,
                         related_name="+",
-                        to="curation.disease",
+                        to="classification.disease",
                     ),
                 ),
                 (
@@ -399,20 +399,20 @@ class Migration(migrations.Migration):
                         null=True,
                         on_delete=django.db.models.deletion.DO_NOTHING,
                         related_name="+",
-                        to="curation.variant",
+                        to="classification.variant",
                     ),
                 ),
             ],
             options={
-                "verbose_name": "historical curation",
-                "verbose_name_plural": "historical curations",
+                "verbose_name": "historical classification",
+                "verbose_name_plural": "historical classifications",
                 "ordering": ("-history_date", "-history_id"),
                 "get_latest_by": ("history_date", "history_id"),
             },
             bases=(simple_history.models.HistoricalChanges, models.Model),
         ),
         migrations.CreateModel(
-            name="Curation",
+            name="Classification",
             fields=[
                 (
                     "id",
@@ -458,30 +458,30 @@ class Migration(migrations.Migration):
                         blank=True,
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
-                        related_name="curations",
-                        to="curation.batch",
+                        related_name="classifications",
+                        to="classification.batch",
                     ),
                 ),
                 (
                     "disease",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.PROTECT,
-                        related_name="curations",
-                        to="curation.disease",
+                        related_name="classifications",
+                        to="classification.disease",
                     ),
                 ),
                 (
                     "publications",
                     models.ManyToManyField(
-                        blank=True, related_name="curations", to="curation.publication"
+                        blank=True, related_name="classifications", to="classification.publication"
                     ),
                 ),
                 (
                     "variant",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.PROTECT,
-                        related_name="curations",
-                        to="curation.variant",
+                        related_name="classifications",
+                        to="classification.variant",
                     ),
                 ),
             ],

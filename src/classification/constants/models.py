@@ -23,7 +23,7 @@ class BatchMaxLength:
     STATUS = 20
 
 
-class CurationMaxLength:
+class ClassificationMaxLength:
     AFFILIATION = 5
     SOURCE_APP = 50
     SCHEMA_VERSION = 20
@@ -43,7 +43,7 @@ class BatchStatus(models.TextChoices):
     ERROR = "ERR", "Error"
 
 
-class CurationStatus(models.TextChoices):
+class ClassificationStatus(models.TextChoices):
     PENDING = "PND", "Pending"
     IN_BATCH = "BAT", "In Batch"
     SUBMITTED = "SUB", "Submitted"

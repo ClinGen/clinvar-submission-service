@@ -1,7 +1,7 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-{% block title %}Curations{% endblock %}
-{% block description %}Review pending curations awaiting ClinVar
+{% block title %}Classifications{% endblock %}
+{% block description %}Review pending classifications awaiting ClinVar
     submission.{% endblock %}
 {% block main %}
     <div class="box mt-6 mb-6">
@@ -16,19 +16,19 @@
                 </li>
                 <li>
                     <b>
-                        <a href="{% url 'curation-list' %}">
+                        <a href="{% url 'classification-list' %}">
                             {% include "common/icon.html" with icon_name="list-ul" %}
-                            Curations
+                            Classifications
                         </a>
                     </b>
                 </li>
             </ul>
         </nav>
 
-        <h1 class="title">Curations</h1>
+        <h1 class="title">Classifications</h1>
 
         <div class="scroll-container">
-            <table id="curation-table"
+            <table id="classification-table"
                    class="table is-striped is-hoverable is-fullwidth">
                 <thead>
                 <tr>
@@ -42,19 +42,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for curation in curations %}
+                {% for classification in classifications %}
                     <tr>
-                        <td>{{ curation.local_id }}</td>
-                        <td>{{ curation.variant.car_id }}</td>
-                        <td>{{ curation.disease }}</td>
-                        <td>{{ curation.germline_classification }}</td>
-                        <td>{{ curation.affiliation }}</td>
-                        <td>{{ curation.get_status_display }}</td>
-                        <td>{{ curation.added_at }}</td>
+                        <td>{{ classification.local_id }}</td>
+                        <td>{{ classification.variant.car_id }}</td>
+                        <td>{{ classification.disease }}</td>
+                        <td>{{ classification.germline_classification }}</td>
+                        <td>{{ classification.affiliation }}</td>
+                        <td>{{ classification.get_status_display }}</td>
+                        <td>{{ classification.added_at }}</td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="7">No curations found.</td>
+                        <td colspan="7">No classifications found.</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -65,7 +65,7 @@
 
     <script>
         document.addEventListener('htmx:load', () => {
-            new DataTable('#curation-table');
+            new DataTable('#classification-table');
         });
     </script>
 {% endblock %}

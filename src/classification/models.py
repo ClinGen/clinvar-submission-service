@@ -3,11 +3,11 @@ import uuid
 from django.db import models
 from simple_history.models import HistoricalRecords
 
-from curation.constants.models import (
+from classification.constants.models import (
     BatchMaxLength,
     BatchStatus,
-    CurationMaxLength,
-    CurationStatus,
+    ClassificationMaxLength,
+    ClassificationStatus,
     DiseaseMaxLength,
     PublicationMaxLength,
     VariantMaxLength,
@@ -87,47 +87,47 @@ class Batch(models.Model):
         return self.name or self.submission_id or str(self.pk)
 
 
-class Curation(models.Model):
-    Status = CurationStatus
+class Classification(models.Model):
+    Status = ClassificationStatus
 
     variant = models.ForeignKey(
-        Variant, on_delete=models.PROTECT, related_name="curations"
+        Variant, on_delete=models.PROTECT, related_name="classifications"
     )
     disease = models.ForeignKey(
-        Disease, on_delete=models.PROTECT, related_name="curations"
+        Disease, on_delete=models.PROTECT, related_name="classifications"
     )
     publications = models.ManyToManyField(
-        Publication, blank=True, related_name="curations"
+        Publication, blank=True, related_name="classifications"
     )
     batch = models.ForeignKey(
         Batch,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="curations",
+        related_name="classifications",
     )
     local_id = models.UUIDField(default=uuid.uuid4)
     linking_id = models.UUIDField(default=uuid.uuid4)
     germline_classification = models.CharField(
-        max_length=CurationMaxLength.GERMLINE_CLASSIFICATION
+        max_length=ClassificationMaxLength.GERMLINE_CLASSIFICATION
     )
     mode_of_inheritance = models.CharField(
-        max_length=CurationMaxLength.MODE_OF_INHERITANCE
+        max_length=ClassificationMaxLength.MODE_OF_INHERITANCE
     )
     date_last_evaluated = models.DateField(null=True, blank=True)
     comment_on_classification = models.TextField(blank=True)
-    collection_method = models.CharField(max_length=CurationMaxLength.COLLECTION_METHOD)
-    allele_origin = models.CharField(max_length=CurationMaxLength.ALLELE_ORIGIN)
-    affected_status = models.CharField(max_length=CurationMaxLength.AFFECTED_STATUS)
-    affiliation = models.CharField(max_length=CurationMaxLength.AFFILIATION, default="")
-    scv = models.CharField(max_length=CurationMaxLength.SCV, null=True, blank=True)
+    collection_method = models.CharField(max_length=ClassificationMaxLength.COLLECTION_METHOD)
+    allele_origin = models.CharField(max_length=ClassificationMaxLength.ALLELE_ORIGIN)
+    affected_status = models.CharField(max_length=ClassificationMaxLength.AFFECTED_STATUS)
+    affiliation = models.CharField(max_length=ClassificationMaxLength.AFFILIATION, default="")
+    scv = models.CharField(max_length=ClassificationMaxLength.SCV, null=True, blank=True)
     status = models.CharField(
-        max_length=CurationMaxLength.STATUS,
-        choices=CurationStatus,
-        default=CurationStatus.PENDING,
+        max_length=ClassificationMaxLength.STATUS,
+        choices=ClassificationStatus,
+        default=ClassificationStatus.PENDING,
     )
-    source_app = models.CharField(max_length=CurationMaxLength.SOURCE_APP)
-    schema_version = models.CharField(max_length=CurationMaxLength.SCHEMA_VERSION)
+    source_app = models.CharField(max_length=ClassificationMaxLength.SOURCE_APP)
+    schema_version = models.CharField(max_length=ClassificationMaxLength.SCHEMA_VERSION)
     raw_payload = models.JSONField()
     added_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

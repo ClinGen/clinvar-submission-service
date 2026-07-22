@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     "api",
     "core",
     "common",
-    "curation",
+    "classification",
 ]
 
 MIDDLEWARE = [

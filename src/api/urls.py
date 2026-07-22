@@ -4,6 +4,6 @@ from api import views
 
 urlpatterns = [
     path("health/", views.health),
-    path("v1/curation/create/", views.CurationCreateView.as_view()),
-    path("v1/curation/<uuid:local_id>/update/", views.CurationUpdateView.as_view()),
+    path("v1/classification/create/", views.ClassificationCreateView.as_view()),
+    path("v1/classification/<uuid:local_id>/update/", views.ClassificationUpdateView.as_view()),
 ]

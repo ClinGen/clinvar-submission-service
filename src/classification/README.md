@@ -1,23 +1,23 @@
-# `curation`
+# `classification`
 
 The core Django app for the ClinVar submission service. It defines the data models that
-represent the lifecycle of a ClinGen curation from receipt to ClinVar submission:
-variants, diseases, publications, batches, and curations. Each model tracks full edit
+represent the lifecycle of a ClinGen classification from receipt to ClinVar submission:
+variants, diseases, publications, batches, and classifications. Each model tracks full edit
 history via `django-simple-history`.
 
 ### `__init__.py`
 
-Empty file that marks `curation` as a Python package.
+Empty file that marks `classification` as a Python package.
 
 ### `apps.py`
 
-Django app configuration. Registers the app under the name `curation` and sets
+Django app configuration. Registers the app under the name `classification` and sets
 `BigAutoField` as the default primary key type.
 
 ### `fixtures/dummy.json`
 
 Django fixture with sample data for local development and testing. Loads two `Variant`
-records, two `Disease` records, two `Publication` records, and two `Curation` records in
+records, two `Disease` records, two `Publication` records, and two `Classification` records in
 `Pending` status. Load with `uv run manage.py loaddata dummy`.
 
 ### `models.py`
@@ -30,10 +30,10 @@ Defines five models:
   `MONDO:0000001` or `OMIM:123456`).
 - **`Publication`** — a supporting publication identified by PubMed ID or DOI, with
   author list and year.
-- **`Batch`** — a named group of curations submitted together to ClinVar. Tracks
+- **`Batch`** — a named group of classifications submitted together to ClinVar. Tracks
   submission ID, the raw ClinVar payload, and status
   (`Created → Submitted → Processed / Error`).
-- **`Curation`** — the central record linking a variant, disease, and zero or more
+- **`Classification`** — the central record linking a variant, disease, and zero or more
   publications. Stores ClinVar-required fields (germline classification, mode of
   inheritance, collection method, allele origin, affected status) plus provenance fields
   (source app, schema version, raw payload). Status flows from

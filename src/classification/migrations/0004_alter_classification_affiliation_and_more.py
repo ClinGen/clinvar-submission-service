@@ -5,17 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("curation", "0003_curation_affiliation_historicalcuration_affiliation"),
+        ("classification", "0003_classification_affiliation_historicalclassification_affiliation"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="curation",
+            model_name="classification",
             name="affiliation",
             field=models.CharField(default="", max_length=5),
         ),
         migrations.AlterField(
-            model_name="historicalcuration",
+            model_name="historicalclassification",
             name="affiliation",
             field=models.CharField(default="", max_length=5),
         ),

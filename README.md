@@ -1,4 +1,4 @@
 # ClinVar Submission Service
 
-The ClinVar Submission Service (CVSS) manages submissions from curation
-interfaces to ClinVar.
+The ClinVar Submission Service (CVSS) manages submissions from upstream
+applications to ClinVar.

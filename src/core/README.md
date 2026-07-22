@@ -17,7 +17,7 @@ sets `BigAutoField` as the default primary-key type.
 ### `templates/core/about.html`
 
 Renders the About page, which gives a one-sentence description of the ClinVar Submission
-Service (CVSS) and its role in allowing ClinGen applications to submit curations to
+Service (CVSS) and its role in allowing ClinGen applications to submit classifications to
 ClinVar.
 
 ### `templates/core/contact.html`

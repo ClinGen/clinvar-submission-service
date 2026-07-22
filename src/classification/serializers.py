@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from curation.constants.models import (
-    CurationMaxLength,
+from classification.constants.models import (
+    ClassificationMaxLength,
     DiseaseMaxLength,
     PublicationMaxLength,
     VariantMaxLength,
 )
-from curation.models import Curation, Disease, Publication, Variant
+from classification.models import Classification, Disease, Publication, Variant
 
 
 class VariantSerializer(serializers.Serializer):
@@ -53,21 +53,21 @@ class PublicationSerializer(serializers.Serializer):
     )
 
 
-class CurationSerializer(serializers.Serializer):
+class ClassificationSerializer(serializers.Serializer):
     variant = VariantSerializer()
     disease = DiseaseSerializer()
     publications = PublicationSerializer(many=True, required=False, default=list)
-    affiliation = serializers.CharField(max_length=CurationMaxLength.AFFILIATION)
-    source_app = serializers.CharField(max_length=CurationMaxLength.SOURCE_APP)
-    schema_version = serializers.CharField(max_length=CurationMaxLength.SCHEMA_VERSION)
+    affiliation = serializers.CharField(max_length=ClassificationMaxLength.AFFILIATION)
+    source_app = serializers.CharField(max_length=ClassificationMaxLength.SOURCE_APP)
+    schema_version = serializers.CharField(max_length=ClassificationMaxLength.SCHEMA_VERSION)
     raw_payload = serializers.JSONField()
     local_id = serializers.UUIDField()
     linking_id = serializers.UUIDField()
     germline_classification = serializers.CharField(
-        max_length=CurationMaxLength.GERMLINE_CLASSIFICATION
+        max_length=ClassificationMaxLength.GERMLINE_CLASSIFICATION
     )
     mode_of_inheritance = serializers.CharField(
-        max_length=CurationMaxLength.MODE_OF_INHERITANCE
+        max_length=ClassificationMaxLength.MODE_OF_INHERITANCE
     )
     date_last_evaluated = serializers.DateField(
         required=False, allow_null=True, default=None
@@ -76,11 +76,11 @@ class CurationSerializer(serializers.Serializer):
         required=False, allow_blank=True, default=""
     )
     collection_method = serializers.CharField(
-        max_length=CurationMaxLength.COLLECTION_METHOD
+        max_length=ClassificationMaxLength.COLLECTION_METHOD
     )
-    allele_origin = serializers.CharField(max_length=CurationMaxLength.ALLELE_ORIGIN)
+    allele_origin = serializers.CharField(max_length=ClassificationMaxLength.ALLELE_ORIGIN)
     affected_status = serializers.CharField(
-        max_length=CurationMaxLength.AFFECTED_STATUS
+        max_length=ClassificationMaxLength.AFFECTED_STATUS
     )
 
     def _upsert_variant(self, data):
@@ -130,14 +130,14 @@ class CurationSerializer(serializers.Serializer):
         disease = self._get_or_create_disease(disease_data)
         pubs = [self._upsert_publication(p) for p in publications_data]
 
-        curation = Curation.objects.create(
+        classification = Classification.objects.create(
             variant=variant,
             disease=disease,
-            status=Curation.Status.PENDING,
+            status=Classification.Status.PENDING,
             **validated_data,
         )
-        curation.publications.set(pubs)
-        return curation
+        classification.publications.set(pubs)
+        return classification
 
     def update(self, instance, validated_data):
         variant_data = validated_data.pop("variant")

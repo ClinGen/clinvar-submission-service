@@ -5,9 +5,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_api_key.permissions import HasAPIKey
 
-from curation.constants.models import CurationStatus
-from curation.models import Curation
-from curation.serializers import CurationSerializer
+from classification.constants.models import ClassificationStatus
+from classification.models import Classification
+from classification.serializers import ClassificationSerializer
 
 
 @api_view(["GET"])
@@ -16,51 +16,51 @@ def health(request):
     return Response({"status": "ok"})
 
 
-class CurationCreateView(APIView):
+class ClassificationCreateView(APIView):
     permission_classes = [HasAPIKey]
 
     def post(self, request):
-        serializer = CurationSerializer(data=request.data)
+        serializer = ClassificationSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         local_id = serializer.validated_data["local_id"]
-        if Curation.objects.filter(local_id=local_id).exists():
+        if Classification.objects.filter(local_id=local_id).exists():
             return Response(
-                {"detail": f"Curation with local_id '{local_id}' already exists."},
+                {"detail": f"Classification with local_id '{local_id}' already exists."},
                 status=status.HTTP_409_CONFLICT,
             )
 
-        curation = serializer.save()
+        classification = serializer.save()
         return Response(
-            {"local_id": str(curation.local_id), "status": "pending"},
+            {"local_id": str(classification.local_id), "status": "pending"},
             status=status.HTTP_201_CREATED,
         )
 
 
-class CurationUpdateView(APIView):
+class ClassificationUpdateView(APIView):
     permission_classes = [HasAPIKey]
 
     def put(self, request, local_id):
         try:
-            curation = Curation.objects.get(local_id=local_id)
-        except Curation.DoesNotExist:
+            classification = Classification.objects.get(local_id=local_id)
+        except Classification.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        if curation.status != Curation.Status.PENDING:
+        if classification.status != Classification.Status.PENDING:
             return Response(
                 {
-                    "detail": f"Curation cannot be updated in status '{CurationStatus(curation.status).label}'."
+                    "detail": f"Classification cannot be updated in status '{ClassificationStatus(classification.status).label}'."
                 },
                 status=status.HTTP_409_CONFLICT,
             )
 
-        serializer = CurationSerializer(curation, data=request.data)
+        serializer = ClassificationSerializer(classification, data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        curation = serializer.save()
+        classification = serializer.save()
         return Response(
-            {"local_id": str(curation.local_id), "status": "pending"},
+            {"local_id": str(classification.local_id), "status": "pending"},
             status=status.HTTP_200_OK,
         )

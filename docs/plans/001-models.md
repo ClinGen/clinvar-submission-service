@@ -87,8 +87,8 @@ The following information is taken from one of Christine's slideshows. The forma
 **Question — Keys** In the example, Local ID and Linking ID are the same UUID. Are they
 always the same? If they can differ, what is the distinction? *(Ask Christine.)*
 
-**Decision — Variant ID** Variant should be its own model, with curations pointing to it
-via a foreign key.
+**Decision — Variant ID** Variant should be its own model, with classifications pointing
+to it via a foreign key.
 
 **Question — Variant ID** ClinGen CAR IDs should be used as the stable, unique
 identifier for a variant. Does VCI include the CAR ID in the payload it sends to CVSS,
@@ -100,26 +100,28 @@ suggesting it is always derivable. Leaning towards not storing it as a separate 
 *(Confirm with Christine.)*
 
 **Decision — Publication model** PMIDs should live in a separate `Publication` model
-with a many-to-many relationship to curations. The fields will be: `pubmed_id`, `doi`,
-`title`, `authors` `added_at`, `updated_at`, and `history` (django-simple-history).
+with a many-to-many relationship to classifications. The fields will be: `pubmed_id`,
+`doi`, `title`, `authors` `added_at`, `updated_at`, and `history`
+(django-simple-history).
 
-**Decision — ClinVar Accession (SCV)** SCVs are assigned per curation, not per batch.
-After a batch is processed, each curation receives its own SCV from ClinVar, which is
-stored on the curation record. This is also what makes "Novel or Update" derivable.
+**Decision — ClinVar Accession (SCV)** SCVs are assigned per classification, not per
+batch. After a batch is processed, each classification receives its own SCV from
+ClinVar, which is stored on the classification record. This is also what makes "Novel or
+Update" derivable.
 
 **Decision — Novel or Update** "Novel or Update" is derivable from whether a ClinVar
-accession (SCV) already exists for the curation. CVSS should determine this
+accession (SCV) already exists for the classification. CVSS should determine this
 automatically rather than storing it as a field.
 
 **Question — Assertion Criteria** Is Assertion Criteria configured once per affiliation,
-or does it vary per curation? If per affiliation, it doesn't belong on the curation
-record. *(Needs investigation.)*
+or does it vary per classification? If per affiliation, it doesn't belong on the
+classification record. *(Needs investigation.)*
 
 **Decision — Disease information** Disease should be its own model. VCI uses MONDO
 almost exclusively, but to avoid a sparse table and future schema migrations, the model
 should use two fields — `id_type` (e.g. `"MONDO"`) and `id_value` (e.g.
 `"MONDO:0019497"`) — rather than separate per-ontology ID fields. The unique constraint
-is on `id_type` + `id_value`. Curations point to a Disease via a foreign key.
+is on `id_type` + `id_value`. Classifications point to a Disease via a foreign key.
 
 ## Models
 
@@ -148,7 +150,7 @@ is on `id_type` + `id_value`. Curations point to a Disease via a foreign key.
 - `added_at`, `updated_at`
 - `history` (django-simple-history)
 
-**`Curation`**
+**`Classification`**
 
 - FK to `Variant`
 - FK to `Disease`

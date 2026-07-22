@@ -1,6 +1,6 @@
 [
   {
-    "model": "curation.variant",
+    "model": "classification.variant",
     "pk": 1,
     "fields": {
       "car_id": "CAR001",
@@ -13,7 +13,7 @@
     }
   },
   {
-    "model": "curation.variant",
+    "model": "classification.variant",
     "pk": 2,
     "fields": {
       "car_id": "CAR002",
@@ -26,7 +26,7 @@
     }
   },
   {
-    "model": "curation.disease",
+    "model": "classification.disease",
     "pk": 1,
     "fields": {
       "id_type": "MONDO",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "curation.disease",
+    "model": "classification.disease",
     "pk": 2,
     "fields": {
       "id_type": "MONDO",
@@ -46,7 +46,7 @@
     }
   },
   {
-    "model": "curation.publication",
+    "model": "classification.publication",
     "pk": 1,
     "fields": {
       "pubmed_id": "11111111",
@@ -59,7 +59,7 @@
     }
   },
   {
-    "model": "curation.publication",
+    "model": "classification.publication",
     "pk": 2,
     "fields": {
       "pubmed_id": "22222222",
@@ -72,7 +72,7 @@
     }
   },
   {
-    "model": "curation.curation",
+    "model": "classification.classification",
     "pk": 1,
     "fields": {
       "variant": 1,
@@ -100,7 +100,7 @@
     }
   },
   {
-    "model": "curation.curation",
+    "model": "classification.classification",
     "pk": 2,
     "fields": {
       "variant": 2,
